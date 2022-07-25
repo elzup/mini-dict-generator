@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 
-export const importCsv = () => {
-  const data = readFileSync('./out/hyakunin-issyu.csv', 'utf8')
+export const importCsv = (path: string) => {
+  const data = readFileSync(path, 'utf8')
   const lines = data.trim().split('\n')
 
   lines.shift()
