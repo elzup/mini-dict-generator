@@ -5,15 +5,17 @@ export const shortifyKeys = (keys: string[]) => {
   for (const len of rangeAdv(1, keys[0].length)) {
     const skeys = keys.map((k) => k.substring(0, len))
 
-    if (skeys.length === new Set(skeys).size) {
-      return { skeys, len }
-    }
+    if (skeys.length !== new Set(skeys).size) continue
+    return { skeys, len }
   }
   return false
 }
 
 type CompressedResult = { skeys: string[]; salt: string; len: number }
-export const compressKeys = (keys: string[]): CompressedResult => {
+export const compressKeys = (
+  keys: string[],
+  expectLen = 2
+): CompressedResult => {
   const better: CompressedResult = { salt: '', len: 0, skeys: [] }
 
   for (let i = 0; i < 1000; i++) {
@@ -24,12 +26,12 @@ export const compressKeys = (keys: string[]): CompressedResult => {
 
     const res = shortifyKeys(longKeys)
 
-    if (res === false) {
-      continue
-    }
+    if (res === false) continue
+
     better.skeys = res.skeys
     better.len = res.len
     better.salt = salt
+    if (expectLen <= res.len) break
   }
 
   return better
