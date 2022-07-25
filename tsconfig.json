@@ -2,6 +2,7 @@
   "extends": "@elzup/tsconfig",
   "compilerOptions": {
     "module": "commonjs",
+    "sourceMap": true,
     "noUncheckedIndexedAccess": false,
     "noPropertyAccessFromIndexSignature": false,
     "outDir": "lib",
