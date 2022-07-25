@@ -1,11 +1,11 @@
-import { compressKeys } from '.'
+import { compressKeys } from '..'
 
-const _d = {
-  abc: ['a', 'b', 'c'],
-  def: ['d', 'e', 'f'],
-  'cde-opt': ['c', 'd', 'e', 'f', 'g'],
-  other: ['d', 'e', 'f'],
-}
+// const _d = {
+//   abc: ['a', 'b', 'c'],
+//   def: ['d', 'e', 'f'],
+//   'cde-opt': ['c', 'd', 'e', 'f', 'g'],
+//   other: ['d', 'e', 'f'],
+// }
 // test('', () => {
 //   const dict = m(d)
 
@@ -14,8 +14,6 @@ const _d = {
 
 test('compressKeys', () => {
   const res = compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'])
-
-  console.log(res)
 
   expect(res).toStrictEqual({
     salt: '5w',

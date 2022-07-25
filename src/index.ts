@@ -1,5 +1,7 @@
+import { writeFileSync } from 'fs'
 import { hash } from '@elzup/kit/lib/hash'
 import { rangeAdv } from '@elzup/kit/lib/rangeAdv'
+import { importCsv } from './loadData'
 
 export const shortifyKeys = (keys: string[]) => {
   for (const len of rangeAdv(1, keys[0].length)) {
@@ -34,3 +36,25 @@ export const compressKeys = (keys: string[]): CompressedResult => {
 
   return better
 }
+
+export const main = () => {
+  const items = importCsv()
+
+  const firsts = items.map((v) => v.first)
+  const lasts = items.map((v) => v.last)
+
+  const { skeys, len, salt } = compressKeys(firsts)
+
+  const ents = skeys.map((k, i) => [k, lasts[i]])
+
+  writeFileSync('./out/100.csv', ents.map(([k, v]) => `${k},${v}`).join('\n'))
+  writeFileSync(
+    './out/100.json',
+    JSON.stringify({
+      __len: len,
+      __salt: salt,
+      ...Object.fromEntries(ents),
+    })
+  )
+}
+main()
