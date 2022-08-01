@@ -14,11 +14,12 @@ export const shortifyKeys = (keys: string[]) => {
 type CompressedResult = { skeys: string[]; salt: string; len: number }
 export const compressKeys = (
   keys: string[],
-  expectLen = 2
+  expectLen = 2,
+  tryCount = 1000
 ): CompressedResult => {
-  const better: CompressedResult = { salt: '', len: 0, skeys: [] }
+  const better: CompressedResult = { salt: '', len: Infinity, skeys: [] }
 
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < tryCount; i++) {
     const salt = Buffer.from(new Uint8Array([i]).buffer).toString('base64url')
 
     if (salt.length > 2) break
@@ -28,17 +29,24 @@ export const compressKeys = (
 
     if (res === false) continue
 
-    better.skeys = res.skeys
-    better.len = res.len
-    better.salt = salt
+    if (better.len > res.len) {
+      better.skeys = res.skeys
+      better.len = res.len
+      better.salt = salt
+    }
     if (expectLen >= res.len) break
   }
 
   return better
 }
 
-export const compressObj = (keys: string[], values: string[]) => {
-  const { skeys, len, salt } = compressKeys(keys)
+export const compressObj = (
+  keys: string[],
+  values: string[],
+  expectLen: number,
+  tryCount: number
+) => {
+  const { skeys, len, salt } = compressKeys(keys, expectLen, tryCount)
 
   const ents = skeys.map((k, i) => [k, values[i]])
   const obj = Object.fromEntries(ents)
