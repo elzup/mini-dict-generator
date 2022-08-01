@@ -31,7 +31,7 @@ export const compressKeys = (
     better.skeys = res.skeys
     better.len = res.len
     better.salt = salt
-    if (expectLen <= res.len) break
+    if (expectLen >= res.len) break
   }
 
   return better

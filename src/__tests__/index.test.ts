@@ -13,11 +13,19 @@ import { compressKeys } from '..'
 // })
 
 test('compressKeys', () => {
-  const res = compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'])
+  expect(compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'])).toStrictEqual({
+    len: 2,
+    salt: 'AA',
+    skeys: ['gb', 'Nf', 'EV', 'N6', 'TR'],
+  })
+})
+
+test('compressKeys expectLen', () => {
+  const res = compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'], 1)
 
   expect(res).toStrictEqual({
-    salt: '5w',
+    salt: 'AQ',
     len: 1,
-    skeys: ['a', '7', 'S', 'C', 'D'],
+    skeys: ['A', 'Q', 'S', 'u', 'M'],
   })
 })
