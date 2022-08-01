@@ -8,7 +8,7 @@ export const main = () => {
   const firsts = items.map((v) => v.first)
   const lasts = items.map((v) => v.last)
 
-  const { obj, ents, meta } = compressObj(firsts, lasts)
+  const { obj, ents, meta } = compressObj(firsts, lasts, 2, 10000)
 
   writeFileSync('./out/100.csv', ents.map(([k, v]) => `${k},${v}`).join('\n'))
   writeFileSync(
