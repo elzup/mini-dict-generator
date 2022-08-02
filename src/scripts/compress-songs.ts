@@ -14,14 +14,20 @@ const packValues = (vals: string[]) => {
   })
   return obj
 }
+const parseArtists = (artists: string) =>
+  artists
+    .replace(/^"/, '')
+    .replace(/"$/, '')
+    .replace(/.*\(/, '')
+    .replace(/\).*/, '')
+    .trim()
+    .split('、')
 
 export const main = () => {
   const items = importCsvSong('./out/songs.tsv', '\t')
 
-  console.log(items)
-
   const firsts = items.map((v) => v.title)
-  const lasts = items.map((v) => v.artists.split('、'))
+  const lasts = items.map((v) => parseArtists(v.artists))
 
   if (uniq(lasts.flat()).length > 90) throw new Error('too many artists')
   const vlib = packValues(uniq(lasts.flat()))
@@ -31,9 +37,12 @@ export const main = () => {
 
   const { obj, ents, meta } = compressObj(firsts, vs, 2, 10000)
 
-  writeFileSync('./out/100.csv', ents.map(([k, v]) => `${k},${v}`).join('\n'))
   writeFileSync(
-    './out/100.json',
+    './out/songs.min.csv',
+    ents.map(([k, v]) => `${k},${v}`).join('\n')
+  )
+  writeFileSync(
+    './out/songs.min.json',
     JSON.stringify({
       __meta: { ...meta, vlib },
       ...obj,
