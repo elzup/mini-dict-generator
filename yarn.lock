@@ -291,10 +291,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@elzup/kit@^3.4.1":
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/@elzup/kit/-/kit-3.5.2.tgz#a8cbca0e26297544d9be6181f1858c3c04ac6ee3"
-  integrity sha512-6o/PseNRjGZhtOqrZvdDfFSNnUABDePJ8tSwYbrFwSXHuyEDhaK6Vrf2+RcDXa7EvZ3Az2aE3TyeWtBei86bOQ==
+"@elzup/kit@^3.5.4":
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/@elzup/kit/-/kit-3.5.4.tgz#da974ca09956b4b0a97281755b566a129c0d17f8"
+  integrity sha512-0BoQkCMaku3bxOaCy3B0QdX73ZdFyw1o8gQk8iZbhidlLiVhEPY+rWeuRXXX0s8OdQtbPZ/GqSL59DnJfFqD5Q==
 
 "@elzup/tsconfig@^1.0.2":
   version "1.0.2"

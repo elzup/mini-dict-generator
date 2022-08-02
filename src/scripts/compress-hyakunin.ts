@@ -1,9 +1,9 @@
 import { writeFileSync } from 'fs'
 import { compressObj } from '../index'
-import { importCsv } from './importCsv'
+import { importCsvHyaku } from './importCsv'
 
 export const main = () => {
-  const items = importCsv('./out/hyakunin-issyu.csv')
+  const items = importCsvHyaku('./out/hyakunin-issyu.csv')
 
   const firsts = items.map((v) => v.first)
   const lasts = items.map((v) => v.last)
