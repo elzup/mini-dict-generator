@@ -1,5 +1,8 @@
+import { uniq } from '@elzup/kit'
 import { hash } from '@elzup/kit/lib/hash'
 import { rangeAdv } from '@elzup/kit/lib/rangeAdv'
+
+const isUniq = (a: any[]) => uniq(a).length === shortifyKeys.length
 
 export const shortifyKeys = (keys: string[]) => {
   for (const len of rangeAdv(1, keys[0].length)) {
@@ -17,6 +20,7 @@ export const compressKeys = (
   expectLen = 2,
   tryCount = 1000
 ): CompressedResult => {
+  if (!isUniq(keys)) throw new Error('not uniq keys')
   const better: CompressedResult = { salt: '', len: Infinity, skeys: [] }
 
   for (let i = 0; i < tryCount; i++) {

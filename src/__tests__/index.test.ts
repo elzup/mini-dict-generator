@@ -12,20 +12,24 @@ import { compressKeys } from '..'
 //   expect(dict.get('abc')).toEqual(['a', 'b', 'c'])
 // })
 
-test('compressKeys', () => {
-  expect(compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'])).toStrictEqual({
-    len: 2,
-    salt: 'AA',
-    skeys: ['gb', 'Nf', 'EV', 'N6', 'TR'],
+describe('compressKeys', () => {
+  it('compress', () => {
+    expect(compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'])).toStrictEqual({
+      len: 2,
+      salt: 'AA',
+      skeys: ['gb', 'Nf', 'EV', 'N6', 'TR'],
+    })
   })
-})
+  it('compressKeys expectLen', () => {
+    const res = compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'], 1)
 
-test('compressKeys expectLen', () => {
-  const res = compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'], 1)
-
-  expect(res).toStrictEqual({
-    salt: 'AQ',
-    len: 1,
-    skeys: ['A', 'Q', 'S', 'u', 'M'],
+    expect(res).toStrictEqual({
+      salt: 'AQ',
+      len: 1,
+      skeys: ['A', 'Q', 'S', 'u', 'M'],
+    })
+  })
+  it('non uniq', () => {
+    expect(() => compressKeys(['a', 'b', 'a'])).toThrow('not uniq keys')
   })
 })
