@@ -44,15 +44,32 @@ export const compressKeys = (
   return better
 }
 
+const kvCheck = (
+  keys: string[],
+  values: string[],
+  pressUnUniqKeys: boolean
+) => {
+  if (isUniq(keys)) return [keys, values]
+
+  if (!pressUnUniqKeys)
+    throw new Error('not uniq keys (if pressUnUniqKeys: true overwrite keys)')
+  const obj: Record<string, string> = {}
+
+  keys.forEach((k, i) => (obj[k] = values[i]))
+  return [Object.keys(obj), Object.values(obj)]
+}
+
 export const compressObj = (
   keys: string[],
   values: string[],
   expectLen = 2,
-  tryCount = 1000
+  tryCount = 1000,
+  pressUnUniqKeys = false
 ) => {
-  const { skeys, len, salt } = compressKeys(keys, expectLen, tryCount)
+  const [keys2, values2] = kvCheck(keys, values, pressUnUniqKeys)
+  const { skeys, len, salt } = compressKeys(keys2, expectLen, tryCount)
 
-  const ents = skeys.map((k, i) => [k, values[i]])
+  const ents = skeys.map((k, i) => [k, values2[i]])
   const obj = Object.fromEntries(ents)
 
   return { ents, obj, meta: { len, salt } }

@@ -38,7 +38,7 @@ describe('compressObj', () => {
   it('compress', () => {
     expect(
       compressObj(['a', 'ほげ', 'b', ',#/', 'ふが'], ['A', 'B', 'C', 'D', 'E'])
-    ).toMatchSnapshot({
+    ).toStrictEqual({
       ents: [
         ['gb', 'A'],
         ['Nf', 'B'],
@@ -48,6 +48,18 @@ describe('compressObj', () => {
       ],
       meta: { len: 2, salt: 'AA' },
       obj: { EV: 'C', N6: 'D', Nf: 'B', TR: 'E', gb: 'A' },
+    })
+  })
+  it('with overwrite', () => {
+    const res = compressObj(['a', 'b', 'b'], ['A', 'B', 'C'], 2, 1000, true)
+
+    expect(res).toStrictEqual({
+      ents: [
+        ['g', 'A'],
+        ['E', 'C'],
+      ],
+      meta: { len: 1, salt: 'AA' },
+      obj: { E: 'C', g: 'A' },
     })
   })
 })
