@@ -2,7 +2,7 @@ import { uniq } from '@elzup/kit'
 import { hash } from '@elzup/kit/lib/hash'
 import { rangeAdv } from '@elzup/kit/lib/rangeAdv'
 
-const isUniq = (a: any[]) => uniq(a).length === shortifyKeys.length
+const isUniq = (a: any[]) => uniq(a).length === a.length
 
 export const shortifyKeys = (keys: string[]) => {
   for (const len of rangeAdv(1, keys[0].length)) {
@@ -47,8 +47,8 @@ export const compressKeys = (
 export const compressObj = (
   keys: string[],
   values: string[],
-  expectLen: number,
-  tryCount: number
+  expectLen = 2,
+  tryCount = 1000
 ) => {
   const { skeys, len, salt } = compressKeys(keys, expectLen, tryCount)
 

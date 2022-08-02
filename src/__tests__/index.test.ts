@@ -1,4 +1,4 @@
-import { compressKeys } from '..'
+import { compressKeys, compressObj } from '..'
 
 // const _d = {
 //   abc: ['a', 'b', 'c'],
@@ -31,5 +31,23 @@ describe('compressKeys', () => {
   })
   it('non uniq', () => {
     expect(() => compressKeys(['a', 'b', 'a'])).toThrow('not uniq keys')
+  })
+})
+
+describe('compressObj', () => {
+  it('compress', () => {
+    expect(
+      compressObj(['a', 'ほげ', 'b', ',#/', 'ふが'], ['A', 'B', 'C', 'D', 'E'])
+    ).toMatchSnapshot({
+      ents: [
+        ['gb', 'A'],
+        ['Nf', 'B'],
+        ['EV', 'C'],
+        ['N6', 'D'],
+        ['TR', 'E'],
+      ],
+      meta: { len: 2, salt: 'AA' },
+      obj: { EV: 'C', N6: 'D', Nf: 'B', TR: 'E', gb: 'A' },
+    })
   })
 })
