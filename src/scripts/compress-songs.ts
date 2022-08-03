@@ -3,6 +3,45 @@ import { incstrBase90, invert, uniq } from '@elzup/kit'
 import { compressObj } from '../index'
 import { importCsvSong } from './importCsv'
 
+const titleNormalize = (title: string) =>
+  normalizeParen(
+    title
+      .trim()
+      .toLowerCase()
+      .replace(/[　]/g, '')
+      .replace(/！/g, '!')
+      .replace(/？/g, '?')
+      .replace(/／/g, '/')
+      .replace(/＼/g, '\\')
+      .replace(/、，/g, ',')
+      .replace(/。．/g, '.')
+      .replace(/：/g, ':')
+      .replace(/；/g, ';')
+      .replace(/´｀¨‘’/g, "'")
+      .replace(/＿/g, '_')
+      .replace(/＾/g, '^')
+      .replace(/ー―‐－/g, '^')
+      .replace(/～/g, '~')
+      .replace(/✕×✖/g, '×')
+      .replace(/“”/g, '"')
+      .replace(/＝/g, '=')
+      .replace(/￥/g, '¥')
+      .replace(/＄/g, '$')
+      .replace(/％/g, '%')
+      .replace(/＃/g, '#')
+      .replace(/＆/g, '&')
+      .replace(/＊/g, '*')
+      .replace(/＠/g, '@')
+  )
+
+// ・
+// 々仝ヽヾゝゞ〃〆
+
+const normalizeParen = (s: string) =>
+  s
+    .replace(/[（〔［｛〈《「『【＜]/g, '(')
+    .replace(/[）〕］｝〉》」』】＞]/g, ')')
+
 // const normalize = (s: string) => s
 const packValues = (vals: string[]) => {
   let i = incstrBase90('0')
@@ -26,7 +65,7 @@ const parseArtists = (artists: string) =>
 export const main = () => {
   const items = importCsvSong('./out/songs.tsv', '\t')
 
-  const firsts = items.map((v) => v.title)
+  const firsts = items.map((v) => titleNormalize(v.title))
   const lasts = items.map((v) => parseArtists(v.artists))
 
   if (uniq(lasts.flat()).length > 90) throw new Error('too many artists')
