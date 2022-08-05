@@ -18,7 +18,8 @@ type CompressedResult = { skeys: string[]; salt: string; len: number }
 export const compressKeys = (
   keys: string[],
   expectLen = 2,
-  tryCount = 1000
+  tryCount = 1000,
+  nonShortify = false
 ): CompressedResult => {
   if (!isUniq(keys)) throw new Error('not uniq keys')
   const better: CompressedResult = { salt: '', len: Infinity, skeys: [] }
@@ -29,7 +30,9 @@ export const compressKeys = (
     if (salt.length > 2) break
     const longKeys = keys.map((s) => hash(`${salt}${s}`, 'md5', 'base64'))
 
-    const res = shortifyKeys(longKeys)
+    const res = nonShortify
+      ? { skeys: longKeys, len: longKeys[0].length }
+      : shortifyKeys(longKeys)
 
     if (res === false) continue
 
