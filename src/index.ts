@@ -4,8 +4,8 @@ import { rangeAdv } from '@elzup/kit/lib/rangeAdv'
 
 const isUniq = (a: any[]) => uniq(a).length === a.length
 
-export const shortifyKeys = (keys: string[]) => {
-  for (const len of rangeAdv(1, keys[0].length)) {
+export const shortifyKeys = (keys: string[], from = 1) => {
+  for (const len of rangeAdv(from, keys[0].length)) {
     const skeys = keys.map((k) => k.substring(0, len))
 
     if (skeys.length !== new Set(skeys).size) continue
@@ -19,9 +19,13 @@ export const compressKeys = (
   keys: string[],
   expectLen = 2,
   tryCount = 1000,
-  nonShortify = false
+  shortifyFrom = 1
 ): CompressedResult => {
   if (!isUniq(keys)) throw new Error('not uniq keys')
+  if (shortifyFrom > expectLen)
+    throw new Error(
+      `shortifyFrom (${shortifyFrom}) >= expectLen (${expectLen})`
+    )
   const better: CompressedResult = { salt: '', len: Infinity, skeys: [] }
 
   for (let i = 0; i < tryCount; i++) {
@@ -30,9 +34,7 @@ export const compressKeys = (
     if (salt.length > 2) break
     const longKeys = keys.map((s) => hash(`${salt}${s}`, 'md5', 'base64'))
 
-    const res = nonShortify
-      ? { skeys: longKeys, len: longKeys[0].length }
-      : shortifyKeys(longKeys)
+    const res = shortifyKeys(longKeys, shortifyFrom)
 
     if (res === false) continue
 
@@ -67,10 +69,16 @@ export const compressObj = (
   values: string[],
   expectLen = 2,
   tryCount = 1000,
-  pressUnUniqKeys = false
+  pressUnUniqKeys = false,
+  shortifyFrom = 1
 ) => {
   const [keys2, values2] = kvCheck(keys, values, pressUnUniqKeys)
-  const { skeys, len, salt } = compressKeys(keys2, expectLen, tryCount)
+  const { skeys, len, salt } = compressKeys(
+    keys2,
+    expectLen,
+    tryCount,
+    shortifyFrom
+  )
 
   const ents = skeys.map((k, i) => [k, values2[i]])
   const obj = Object.fromEntries(ents)

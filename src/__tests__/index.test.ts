@@ -62,4 +62,37 @@ describe('compressObj', () => {
       obj: { E: 'C', g: 'A' },
     })
   })
+
+  it('with shortifyFrom', () => {
+    expect(() =>
+      compressObj(
+        ['a', 'ほげ', 'b', ',#/', 'ふが'],
+        ['A', 'B', 'C', 'D', 'E'],
+        6,
+        1000,
+        false,
+        7
+      )
+    ).toThrow('shortifyFrom (7) >= expectLen (6)')
+    expect(
+      compressObj(
+        ['a', 'ほげ', 'b', ',#/', 'ふが'],
+        ['A', 'B', 'C', 'D', 'E'],
+        7,
+        1000,
+        false,
+        6
+      )
+    ).toStrictEqual({
+      ents: [
+        ['gb2HcM', 'A'],
+        ['Nfbff1', 'B'],
+        ['EVBDMF', 'C'],
+        ['N64gRq', 'D'],
+        ['TR6AAC', 'E'],
+      ],
+      meta: { len: 6, salt: 'AA' },
+      obj: { EVBDMF: 'C', N64gRq: 'D', Nfbff1: 'B', TR6AAC: 'E', gb2HcM: 'A' },
+    })
+  })
 })
