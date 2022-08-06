@@ -39,8 +39,8 @@ export const main = () => {
   const vs = lasts.map((names) => names.map((n) => vlibBy[n]).join('_'))
 
   const { obj, ents, meta } = compressObj(firsts, vs, {
-    expectLen: 2,
-    tryCount: 10000,
+    expectLen: 6,
+    pressUnUniqKeys: true,
     shortifyFrom: 6,
   })
 
