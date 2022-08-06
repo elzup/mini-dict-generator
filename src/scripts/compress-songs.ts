@@ -38,7 +38,11 @@ export const main = () => {
 
   const vs = lasts.map((names) => names.map((n) => vlibBy[n]).join('_'))
 
-  const { obj, ents, meta } = compressObj(firsts, vs, 2, 10000, true)
+  const { obj, ents, meta } = compressObj(firsts, vs, {
+    expectLen: 2,
+    tryCount: 10000,
+    shortifyFrom: 6,
+  })
 
   writeFileSync(
     './out/songs.min.tsv',

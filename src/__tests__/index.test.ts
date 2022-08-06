@@ -21,7 +21,9 @@ describe('compressKeys', () => {
     })
   })
   it('compressKeys expectLen', () => {
-    const res = compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'], 1)
+    const res = compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'], {
+      expectLen: 1,
+    })
 
     expect(res).toStrictEqual({
       salt: 'AQ',
@@ -31,6 +33,24 @@ describe('compressKeys', () => {
   })
   it('non uniq', () => {
     expect(() => compressKeys(['a', 'b', 'a'])).toThrow('not uniq keys')
+  })
+  it('with shortifyFrom', () => {
+    expect(() =>
+      compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'], {
+        expectLen: 6,
+        shortifyFrom: 7,
+      })
+    ).toThrow('need shortifyFrom (7) < expectLen (6)')
+    expect(
+      compressKeys(['a', 'ほげ', 'b', ',#/', 'ふが'], {
+        expectLen: 7,
+        shortifyFrom: 6,
+      })
+    ).toStrictEqual({
+      len: 6,
+      salt: 'AA',
+      skeys: ['gb2HcM', 'Nfbff1', 'EVBDMF', 'N64gRq', 'TR6AAC'],
+    })
   })
 })
 
@@ -51,7 +71,10 @@ describe('compressObj', () => {
     })
   })
   it('with overwrite', () => {
-    const res = compressObj(['a', 'b', 'b'], ['A', 'B', 'C'], 2, 1000, true)
+    const res = compressObj(['a', 'b', 'b'], ['A', 'B', 'C'], {
+      expectLen: 2,
+      pressUnUniqKeys: true,
+    })
 
     expect(res).toStrictEqual({
       ents: [
@@ -60,39 +83,6 @@ describe('compressObj', () => {
       ],
       meta: { len: 1, salt: 'AA' },
       obj: { E: 'C', g: 'A' },
-    })
-  })
-
-  it('with shortifyFrom', () => {
-    expect(() =>
-      compressObj(
-        ['a', 'ほげ', 'b', ',#/', 'ふが'],
-        ['A', 'B', 'C', 'D', 'E'],
-        6,
-        1000,
-        false,
-        7
-      )
-    ).toThrow('shortifyFrom (7) >= expectLen (6)')
-    expect(
-      compressObj(
-        ['a', 'ほげ', 'b', ',#/', 'ふが'],
-        ['A', 'B', 'C', 'D', 'E'],
-        7,
-        1000,
-        false,
-        6
-      )
-    ).toStrictEqual({
-      ents: [
-        ['gb2HcM', 'A'],
-        ['Nfbff1', 'B'],
-        ['EVBDMF', 'C'],
-        ['N64gRq', 'D'],
-        ['TR6AAC', 'E'],
-      ],
-      meta: { len: 6, salt: 'AA' },
-      obj: { EVBDMF: 'C', N64gRq: 'D', Nfbff1: 'B', TR6AAC: 'E', gb2HcM: 'A' },
     })
   })
 })

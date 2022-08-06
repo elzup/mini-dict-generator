@@ -15,17 +15,22 @@ export const shortifyKeys = (keys: string[], from = 1) => {
 }
 
 type CompressedResult = { skeys: string[]; salt: string; len: number }
+type CompressKeyOpts = {
+  expectLen?: number
+  tryCount?: number
+  shortifyFrom?: number
+}
 export const compressKeys = (
   keys: string[],
-  expectLen = 2,
-  tryCount = 1000,
-  shortifyFrom = 1
+  { expectLen = 2, tryCount = 1000, shortifyFrom = 1 }: CompressKeyOpts = {}
 ): CompressedResult => {
   if (!isUniq(keys)) throw new Error('not uniq keys')
+
   if (shortifyFrom > expectLen)
     throw new Error(
-      `shortifyFrom (${shortifyFrom}) >= expectLen (${expectLen})`
+      `need shortifyFrom (${shortifyFrom}) < expectLen (${expectLen})`
     )
+
   const better: CompressedResult = { salt: '', len: Infinity, skeys: [] }
 
   for (let i = 0; i < tryCount; i++) {
@@ -64,21 +69,17 @@ const kvCheck = (
   return [Object.keys(obj), Object.values(obj)]
 }
 
+type CompressObjOpts = CompressKeyOpts & {
+  pressUnUniqKeys?: boolean
+}
+
 export const compressObj = (
   keys: string[],
   values: string[],
-  expectLen = 2,
-  tryCount = 1000,
-  pressUnUniqKeys = false,
-  shortifyFrom = 1
+  { pressUnUniqKeys = false, ...kopts }: CompressObjOpts = {}
 ) => {
   const [keys2, values2] = kvCheck(keys, values, pressUnUniqKeys)
-  const { skeys, len, salt } = compressKeys(
-    keys2,
-    expectLen,
-    tryCount,
-    shortifyFrom
-  )
+  const { skeys, len, salt } = compressKeys(keys2, kopts)
 
   const ents = skeys.map((k, i) => [k, values2[i]])
   const obj = Object.fromEntries(ents)
