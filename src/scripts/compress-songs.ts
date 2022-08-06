@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs'
 import { halfWidth, halfySigns, incstrBase62, invert, uniq } from '@elzup/kit'
-import { compressObj } from '../index'
+import { compressObjArr } from '../index'
 import { importCsvSong } from './importCsv'
 
 const titleNormalize = (title: string) => halfySigns(halfWidth(title))
@@ -38,7 +38,7 @@ export const main = () => {
 
   const vs = lasts.map((names) => names.map((n) => vlibBy[n]).join('_'))
 
-  const { obj, ents, meta } = compressObj(firsts, vs, {
+  const { obj, ents, meta } = compressObjArr(firsts, vs, {
     expectLen: 6,
     pressUnUniqKeys: true,
     shortifyFrom: 6,

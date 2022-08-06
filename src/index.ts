@@ -73,7 +73,7 @@ type CompressObjOpts = CompressKeyOpts & {
   pressUnUniqKeys?: boolean
 }
 
-export const compressObj = (
+export const compressObjArr = (
   keys: string[],
   values: string[],
   { pressUnUniqKeys = false, ...kopts }: CompressObjOpts = {}

@@ -1,4 +1,4 @@
-import { compressKeys, compressObj } from '..'
+import { compressKeys, compressObjArr } from '..'
 
 // const _d = {
 //   abc: ['a', 'b', 'c'],
@@ -57,7 +57,10 @@ describe('compressKeys', () => {
 describe('compressObj', () => {
   it('compress', () => {
     expect(
-      compressObj(['a', 'ほげ', 'b', ',#/', 'ふが'], ['A', 'B', 'C', 'D', 'E'])
+      compressObjArr(
+        ['a', 'ほげ', 'b', ',#/', 'ふが'],
+        ['A', 'B', 'C', 'D', 'E']
+      )
     ).toStrictEqual({
       ents: [
         ['gb', 'A'],
@@ -71,7 +74,7 @@ describe('compressObj', () => {
     })
   })
   it('with overwrite', () => {
-    const res = compressObj(['a', 'b', 'b'], ['A', 'B', 'C'], {
+    const res = compressObjArr(['a', 'b', 'b'], ['A', 'B', 'C'], {
       expectLen: 2,
       pressUnUniqKeys: true,
     })
