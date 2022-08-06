@@ -86,3 +86,13 @@ export const compressObjArr = (
 
   return { ents, obj, meta: { len, salt } }
 }
+
+export const compressObj = (
+  obj: Record<string, string>,
+  opts: CompressObjOpts = {}
+) => compressObjArr(Object.keys(obj), Object.values(obj), opts)
+
+export const compressMap = (
+  obj: Map<string, string>,
+  opts: CompressObjOpts = {}
+) => compressObjArr([...obj.keys()], [...obj.values()], opts)

@@ -1,4 +1,4 @@
-import { compressKeys, compressObjArr } from '..'
+import { compressKeys, compressObj, compressObjArr } from '..'
 
 // const _d = {
 //   abc: ['a', 'b', 'c'],
@@ -54,7 +54,7 @@ describe('compressKeys', () => {
   })
 })
 
-describe('compressObj', () => {
+describe('compressObjArr', () => {
   it('compress', () => {
     expect(
       compressObjArr(
@@ -86,6 +86,24 @@ describe('compressObj', () => {
       ],
       meta: { len: 1, salt: 'AA' },
       obj: { E: 'C', g: 'A' },
+    })
+  })
+})
+
+describe('compressObj', () => {
+  it('compress', () => {
+    expect(
+      compressObj({ a: 'A', ほげ: 'B', b: 'C', ',#/': 'D', ふが: 'E' })
+    ).toStrictEqual({
+      ents: [
+        ['gb', 'A'],
+        ['Nf', 'B'],
+        ['EV', 'C'],
+        ['N6', 'D'],
+        ['TR', 'E'],
+      ],
+      meta: { len: 2, salt: 'AA' },
+      obj: { EV: 'C', N6: 'D', Nf: 'B', TR: 'E', gb: 'A' },
     })
   })
 })
