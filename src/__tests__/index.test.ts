@@ -93,17 +93,27 @@ describe('compressObjArr', () => {
 describe('compressObj', () => {
   it('compress', () => {
     expect(
-      compressObj({ a: 'A', ほげ: 'B', b: 'C', ',#/': 'D', ふが: 'E' })
+      compressObj({
+        monday: 'O',
+        tuesday: 'R',
+        wednesday: 'D',
+        thursday: 'D',
+        friday: 'E',
+        saturday: 'R',
+        sunday: 'S',
+      })
     ).toStrictEqual({
       ents: [
-        ['gb', 'A'],
-        ['Nf', 'B'],
-        ['EV', 'C'],
-        ['N6', 'D'],
-        ['TR', 'E'],
+        ['N', 'O'],
+        ['x', 'R'],
+        ['a', 'D'],
+        ['w', 'D'],
+        ['r', 'E'],
+        ['l', 'R'],
+        ['j', 'S'],
       ],
-      meta: { len: 2, salt: 'AA' },
-      obj: { EV: 'C', N6: 'D', Nf: 'B', TR: 'E', gb: 'A' },
+      meta: { len: 1, salt: 'AA' },
+      obj: { N: 'O', a: 'D', j: 'S', l: 'R', r: 'E', w: 'D', x: 'R' },
     })
   })
 })
