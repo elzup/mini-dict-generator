@@ -303,7 +303,7 @@
   resolved "https://registry.yarnpkg.com/@elzup/kit/-/kit-3.7.1.tgz#f3152203447544c6a7618559e6cda71c67445c4e"
   integrity sha512-BG/BbcbmQsweP9+NWu8Tdk7crM7H905IT5J3Xubwy1HFhJVvbJb4fFdlOe2JB+aj8HxqAmeJGTWOz/AED0UY2A==
 
-"@elzup/tsconfig@^1.1.0":
+"@elzup/tsconfig@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@elzup/tsconfig/-/tsconfig-1.1.0.tgz#dabce8d643c821b625f3567b79202a198b9e50aa"
   integrity sha512-vnO8qq2Cia24qeRZ5taHlrP08xNVisPnA6Ow/WbPO2olhAgg7fkR5Xa5OLr+R9ZmOaWeuDYhjX7FRB3Y5XedKQ==
@@ -4015,7 +4015,7 @@ ts-jest@29.0.3:
     semver "7.x"
     yargs-parser "^21.0.1"
 
-ts-node@^10.9.1:
+ts-node@10.9.1:
   version "10.9.1"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.9.1.tgz#e73de9102958af9e1f0b168a6ff320e25adcff4b"
   integrity sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==
